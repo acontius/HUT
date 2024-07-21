@@ -4,11 +4,11 @@ USE IEEE.std_logic_1164.all;
 ENTITY zero_filling IS 
     PORT(
         imm_in : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
-        imm_out: OUt STD_LOGIC_VECTOR(15 DOWNTO 0);
+        imm_out: OUt STD_LOGIC_VECTOR(15 DOWNTO 0)
     );
-END ENTITY zero_filling; --Zero Filling(ZF)
+END ENTITY; --Zero Filling(ZF)
 
-ARCHITECTURE dataflow OF zero_filling IS 
+ARCHITECTURE structural OF zero_filling IS 
     BEGIN
         imm_out(8 DOWNTO 0) <= imm_in(8 DOWNTO 0);
         generation1 : FOR i IN 0 TO 15 GENERATE
