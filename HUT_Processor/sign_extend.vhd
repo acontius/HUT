@@ -1,5 +1,5 @@
 LIBRARY IEEE;
-USE IEEE.std_logic_1164.all;
+USE IEEE.STD_LOGIC_1164.ALL;
 
 ENTITY sign_extend IS 
     PORT (
@@ -8,7 +8,7 @@ ENTITY sign_extend IS
     );
 END ENTITY; --Sign Extend (SF)
 
-ARCHITECTURE structural OF sign_extend IS 
+ARCHITECTURE behavioral OF sign_extend IS 
     BEGIN 
         imm_out(8 DOWNTO 0) <= imm_in(8 DOWNTO 0);
         generation1 : FOR i IN 0 TO 15 GENERATE
