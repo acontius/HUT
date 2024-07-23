@@ -5,12 +5,13 @@ ENTITY mux4in1 IS
     GENERIC (size : INTEGER);
     PORT (
         in0, in1, in2, in3 : IN STD_LOGIC_VECTOR(size - 1 DOWNTO 0);
-        sel                : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        sel                : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
         outPut             : OUT STD_LOGIC_VECTOR(size - 1 DOWNTO 0)
     );
 END ENTITY; --mux4/1
 
 ARCHITECTURE behavioral OF mux4in1 IS 
+BEGIN
     PROCESS(in0, in1, in2, in3, sel)
     BEGIN
         CASE sel IS 
@@ -23,7 +24,7 @@ ARCHITECTURE behavioral OF mux4in1 IS
             WHEN "11" => 
                 outPut <= in3;
             WHEN OTHERS => 
-                outPut => (OTHERS => '0');
+                outPut <= (OTHERS => '0');
         END CASE;
     END PROCESS;
 END ARCHITECTURE; --Mux 4/1         

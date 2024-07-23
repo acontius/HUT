@@ -1,16 +1,16 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY register IS
+ENTITY regi IS
     GENERIC (size : INTEGER := 16);
     PORT (
         clk, rst, we : IN STD_LOGIC;
         d_in         : IN STD_LOGIC_VECTOR(size-1 DOWNTO 0);
         d_out        : OUT STD_LOGIC_VECTOR(size-1 DOWNTO 0)
     );
-END ENTITY register;
+END ENTITY regi;
 
-ARCHITECTURE behavioral OF register IS
+ARCHITECTURE behavioral OF regi IS
     SIGNAL reg : STD_LOGIC_VECTOR(size-1 DOWNTO 0);
 BEGIN
     process(clk, rst)

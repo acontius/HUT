@@ -12,7 +12,7 @@ ENTITY register_file IS
 END ENTITY register_file;
 
 ARCHITECTURE structural OF register_file IS
-    COMPONENT register IS
+    COMPONENT reg_file_element IS
         GENERIC (size : INTEGER := 16);
         PORT (
             clk, rst, we : IN STD_LOGIC;
@@ -38,41 +38,43 @@ ARCHITECTURE structural OF register_file IS
         );
     END COMPONENT;
 
-    SIGNAL registers  : STD_LOGIC_VECTOR(15 DOWNTO 0)(15 DOWNTO 0);
+    TYPE register_array IS ARRAY (0 TO 15) OF STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL registers  : register_array;
     SIGNAL we_signals : STD_LOGIC_VECTOR(15 DOWNTO 0);
     SIGNAL mux_input  : STD_LOGIC_VECTOR(16*16-1 DOWNTO 0);
 
 BEGIN 
     gen_registers : FOR i IN 0 TO 15 GENERATE
-        register_i : register
+        reg_file_i : reg_file_element
         PORT MAP(
             clk   => clk,
             rst   => rst,
             we    => we_signals(i),
             d_in  => wd,
             d_out => registers(i)
-        );
-    END GENERATE; --registers
+        ); --register generator
+    END GENERATE; -- registers
 
     dec : decoder4to16
         PORT MAP(
             inputDecoder => adr,
             enable       => we,
-            outDecoder   =>register(i)
+            outDecoder   => we_signals
         ); -- decoders
 
-    PROCESS(registers)
+    PROCESS(clk, registers)
     BEGIN 
-        FOR i IN 0 TO LOOP
-            MUX_input((i + 1) * 16 - 1 DOWNTO i * 16) <= registers(i);
+        FOR i IN 0 TO 15 LOOP
+            mux_input((i + 1) * 16 - 1 DOWNTO i * 16) <= registers(i);
         END LOOP;
-    END PROCESS; --Registers array for mux 16/1
+    END PROCESS; -- registers array for mux 16/1
 
     mux_inst : mux16in1
         GENERIC MAP (size => 16)
         PORT MAP(
-            input => mux_inpput,
+            input => mux_input,
             sel   => adr,
-            ouPut => outPut
-        );
-END architecture; --register file 
+            outPut => outPut
+        ); --mux output based on address
+
+END ARCHITECTURE; -- register file
