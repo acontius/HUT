@@ -13,12 +13,13 @@ END ENTITY; --mux3in1
 ARCHITECTURE behavioral OF mux3in1 IS 
     PROCESS(in1, in2, in3, sel)
     BEGIN
-        IF (sel = "00") THEN
+    CASE sel IS 
+        WHEN "00" =>
             outPut <= in1;
-        ELSIF (sel = "01") THEN
+        WHEN "01" =>
             outPut <= in2;
-        ELSE 
+        WHEN "10" =>
             outPut <= in3;
-    END IF;
+    END CASE;
     END PROCESS;
 END ARCHITECTURE; --mux3/1 behave
