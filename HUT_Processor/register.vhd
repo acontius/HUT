@@ -1,25 +1,28 @@
 LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.all;
+USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY reg IS 
-    PORT(
-        clk,rst,we, : IN STD_LOGIC;
-        d_in        : IN STD_LOGIC_VECTOR;
-        d_out       : OUT STD_LOGIC_VECTOR
+ENTITY reg_n_bit IS
+    GENERIC (size : INTEGER := 16);
+    PORT (
+        clk, rst, we : IN STD_LOGIC;
+        d_in         : IN STD_LOGIC_VECTOR(size-1 DOWNTO 0);
+        d_out        : OUT STD_LOGIC_VECTOR(size-1 DOWNTO 0)
     );
-END ENTITY; --register 
+END ENTITY reg_n_bit;
 
-ARCHITECTURE behavioral OF reg IS 
-    CONSTANT zero : STD_LOGIC_VECTOR(d_in'RANGE) := (OTHERS => '0');
-    BEGIN
-        PROCESS (clk,rst)
-        BEGIN
-            IF (rst = '1') THEN
-                d_out <= zero;
-            ELSIF (clk'EVENT AND (clk = '1')) THEN
-                IF (we = '1') THEN
-                    d_out <= d_in;
-                END IF;
-            END IF;
-        END PROCESS;
-    END ARCHITECTURE; --reg behave
+ARCHITECTURE behavioral OF reg_n_bit IS
+    SIGNAL reg : STD_LOGIC_VECTOR(size-1 DOWNTO 0);
+BEGIN
+    process(clk, rst)
+    begin
+        if rst = '1' then
+            reg <= (others => '0');
+        elsif rising_edge(clk) then
+            if we = '1' then
+                reg <= d_in;
+            end if;
+        end if;
+    end process;
+
+    d_out <= reg;
+END ARCHITECTURE behavioral;
