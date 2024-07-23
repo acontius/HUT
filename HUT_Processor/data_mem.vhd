@@ -1,6 +1,7 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
-USE WORK.utilities.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 ENTITY ram IS 
     GENERIC (adr_size, data_size : INTEGER);
@@ -10,19 +11,19 @@ ENTITY ram IS
         d_in    : IN STD_LOGIC_VECTOR(data_size - 1 DOWNTO 0);
         d_out   : OUT STD_LOGIC_VECTOR(data_size - 1 DOWNTO 0)
     );
-END ENTITY; --RAM
+END ENTITY ram;
 
 ARCHITECTURE behavioral OF ram IS 
     TYPE ram_type IS ARRAY (0 TO (2 ** adr_size - 1)) OF STD_LOGIC_VECTOR(data_size - 1 DOWNTO 0);
     SIGNAL myRam : ram_type;
+BEGIN
+    PROCESS(clk)
     BEGIN
-        PROCESS(clk)
-        BEGIN
-            IF (clk'EVENT AND (clk = '1')) THEN 
-                IF (we = '1') THEN 
-                    myRam(bin2int(adr)) <= d_in;
-                END IF;
+        IF rising_edge(clk) THEN 
+            IF we = '1' THEN 
+                myRam(to_integer(unsigned(adr))) <= d_in;
             END IF;
-        END PROCESS;
-    d_out <= myRam(to_integer(adr));
-END ARCHITECTURE;
+            d_out <= myRam(to_integer(unsigned(adr)));
+        END IF;
+    END PROCESS;
+END ARCHITECTURE behavioral;

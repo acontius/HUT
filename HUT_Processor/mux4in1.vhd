@@ -22,6 +22,8 @@ ARCHITECTURE behavioral OF mux4in1 IS
                 outPut <= in2;
             WHEN "11" => 
                 outPut <= in3;
+            WHEN OTHERS => 
+                outPut => (OTHERS => '0');
         END CASE;
     END PROCESS;
 END ARCHITECTURE; --Mux 4/1         

@@ -12,7 +12,7 @@ ENTITY register_file IS
 END ENTITY register_file;
 
 ARCHITECTURE structural OF register_file IS
-    COMPONENT reg_n_bit IS
+    COMPONENT register IS
         GENERIC (size : INTEGER := 16);
         PORT (
             clk, rst, we : IN STD_LOGIC;
