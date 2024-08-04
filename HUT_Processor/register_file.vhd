@@ -4,7 +4,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 ENTITY register_file IS
     PORT (
         clk, rst, we : IN STD_LOGIC;
-        read         : IN STD_LOGIC;
+        read         : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         adr          : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         wd           : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
         outPut       : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)

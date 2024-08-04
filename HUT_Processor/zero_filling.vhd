@@ -1,18 +1,24 @@
-LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.ALL;
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
 
-ENTITY zero_filling IS 
-    PORT(
-        imm_in : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
-        imm_out: OUt STD_LOGIC_VECTOR(15 DOWNTO 0)
+entity zero_filling is
+    generic (n : natural := 1);
+    port (
+        imm_in  : in std_logic_vector(n - 1 downto 0);
+        imm_out : out std_logic_vector(15 downto 0)
     );
-END ENTITY; --Zero Filling(ZF)
+end zero_filling;
 
-ARCHITECTURE behavioral OF zero_filling IS 
-BEGIN
-    process(imm_in)
-    BEGIN
-        imm_out(8 downto 0)  <= imm_in(8 downto 0);
-        imm_out(15 downto 9) <= (others => '0');
-    end process;        
-END ARCHITECTURE; --data flow of zero filling
+architecture behavioral of zero_filling is
+begin
+    process (imm_in) 
+    begin
+        if n <= 16 then
+            imm_out                 <= (others => '0');
+            imm_out(15 downto 16-n) <= imm_in;
+        else
+            imm_out <= imm_in(n-1 downto n-16);
+        end if;
+    end process;
+end behavioral;

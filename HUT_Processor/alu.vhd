@@ -6,7 +6,7 @@ ENTITY alu IS
     PORT(
         in1, in2 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
         alu_opr  : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-        outPut   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+        outPut   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0); --alu_out in the data path 
         zeroFlag : OUT STD_LOGIC
     );
 END ENTITY alu;
@@ -16,7 +16,7 @@ ARCHITECTURE behavioral OF alu IS
 BEGIN
     PROCESS(in1, in2, alu_opr)
     BEGIN
-        CASE alu_opr IS 
+        CASE alu_opr IS     
             WHEN "000" => 
                 temp <= in1 + in2;
             WHEN "001" => 
@@ -31,8 +31,10 @@ BEGIN
                 temp <= in1 NOR in2;
             WHEN "110" => 
                 temp <= NOT in1;
+            WHEN "111" => --1-bit shift
+                temp <= '0' & in1(15 downto 1);
             WHEN OTHERS => 
-                temp <= in1;
+                temp <= in1;										
         END CASE;
     END PROCESS;
     
